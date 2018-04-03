@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class Coneccion {
     
     private String nameDB = "sa_farmacia";
-    private String user = "root";
+    private String user = "sagrupo1";
     private String password = "sagrupo1";
     private String cadenaConexion = "jdbc:mysql://localhost:3306/";
     private Connection con;
