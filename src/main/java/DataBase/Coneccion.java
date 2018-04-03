@@ -27,7 +27,7 @@ public class Coneccion {
     
     public void Conectar(){
         try {
-            con = DriverManager.getConnection(cadenaConexion+nameDB, user,password);
+            con = DriverManager.getConnection(cadenaConexion+nameDB+"?autoReconnect=true&useSSL=false", user,password);
         } catch (SQLException ex) {
             Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
         }
