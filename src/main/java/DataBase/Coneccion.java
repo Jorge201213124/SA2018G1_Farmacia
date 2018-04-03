@@ -36,7 +36,7 @@ public class Coneccion {
     public int Prueba(){
         int result = -1;
         Conectar();
-        if(con!=null) result = 0;
+        if(con!=null) result = 1;
         else result = 0;
         /*
         Statement s = con.createStatement();

@@ -45,7 +45,7 @@ public class OperacionTest {
         int num1 = 100;
         int num2 = 2;
         Operacion instance = new Operacion();
-        String expResult = "200";
+        String expResult = "199";
         String result = instance.Mul(num1, num2);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
