@@ -56,7 +56,7 @@ public class ConeccionTest {
     public void testPrueba() {
         System.out.println("Prueba");
         Coneccion instance = new Coneccion();
-        int expResult = 5;
+        int expResult = 1;
         int result = instance.Prueba();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
