@@ -1,4 +1,5 @@
 
+import DataBase.Coneccion;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -22,7 +23,8 @@ public class Operacion {
     @GET
     @Path("/por")
     public String Mul(@QueryParam("num1") int num1, @QueryParam("num2") int num2){
-        return String.valueOf(num1*num2);
+        Coneccion db = new Coneccion();
+        return String.valueOf(num1*num2-db.Prueba());
     }
     
     @POST

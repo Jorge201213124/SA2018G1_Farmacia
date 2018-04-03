@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package DataBase;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -13,11 +14,11 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author gojor
+ * @author Jorge-Proyectos
  */
-public class OperacionTest {
+public class ConeccionTest {
     
-    public OperacionTest() {
+    public ConeccionTest() {
     }
     
     @BeforeClass
@@ -37,32 +38,26 @@ public class OperacionTest {
     }
 
     /**
-     * Test of Mul method, of class Operacion.
+     * Test of Conectar method, of class Coneccion.
      */
     @Test
-    public void testMul() {
-        System.out.println("Mul");
-        int num1 = 100;
-        int num2 = 2;
-        Operacion instance = new Operacion();
-        String expResult = "195";
-        String result = instance.Mul(num1, num2);
-        assertEquals(expResult, result);
+    public void testConectar() {
+        System.out.println("Conectar");
+        Coneccion instance = new Coneccion();
+        instance.Conectar();
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
     }
 
     /**
-     * Test of Sum method, of class Operacion.
+     * Test of Prueba method, of class Coneccion.
      */
     @Test
-    public void testSum() {
-        System.out.println("Sum");
-        int num1 = 100;
-        int num2 = 2;
-        Operacion instance = new Operacion();
-        String expResult = "102";
-        String result = instance.Sum(num1, num2);
+    public void testPrueba() {
+        System.out.println("Prueba");
+        Coneccion instance = new Coneccion();
+        int expResult = 5;
+        int result = instance.Prueba();
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
