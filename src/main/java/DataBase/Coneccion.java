@@ -38,7 +38,7 @@ public class Coneccion {
         try {
             Conectar();
             Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery ("select count(*) from Farmacia");
+            ResultSet rs = s.executeQuery ("select count(*) from FARMACIA");
             while (rs.next())
             {
                 result = rs.getInt(1);
