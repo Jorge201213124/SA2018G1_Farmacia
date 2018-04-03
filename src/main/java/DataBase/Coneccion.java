@@ -35,18 +35,18 @@ public class Coneccion {
     
     public int Prueba(){
         int result = -1;
-        try {
-            Conectar();
-            Statement s = con.createStatement();
-            ResultSet rs = s.executeQuery ("select count(*) from FARMACIA");
-            while (rs.next())
-            {
-                result = rs.getInt(1);
-            }
-            con.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        Conectar();
+        if(con!=null) result = 1;
+        else result = 0;
+        /*
+        Statement s = con.createStatement();
+        ResultSet rs = s.executeQuery ("select count(*) from FARMACIA");
+        while (rs.next())
+        {
+        result = rs.getInt(1);
         }
+        con.close();
+        */
         return result;
     }
 }
