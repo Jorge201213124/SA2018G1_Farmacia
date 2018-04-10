@@ -9,6 +9,7 @@ import Logica.Farmacia;
 import Logica.Medicamento;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,12 +26,13 @@ public class Coneccion {
     private String nameDB = "sa_farmacia";
     private String user = "sagrupo1";
     private String password = "sagrupo1";
-    private String cadenaConexion = "jdbc:mysql://localhost:3306/";
+    private String cadenaConexion = "jdbc:mysql://192.168.1.7:3306/";
     private Connection con;
     
     public void Conectar(){
         try {
-            con = DriverManager.getConnection(cadenaConexion+nameDB+"?autoReconnect=true&useSSL=false", user,password);
+            
+            con = DriverManager.getConnection(cadenaConexion+nameDB, user,password);
         } catch (SQLException ex) {
             Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -43,6 +45,30 @@ public class Coneccion {
             } catch (SQLException ex) {
                 Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+    
+    public int insertMedicamento(Medicamento med){
+        if(med != null){
+            try {
+                String cmd = "INSERT INTO MEDICAMENTO"
+                + "(Nombre,Fabricante,Descripcion,Precio,Existencias,Bajo_prescripcion) VALUES"
+                + "(?,?,?,?,?,?)";
+                PreparedStatement preparedStatement = con.prepareStatement(cmd);
+                preparedStatement.setString(1, med.getNombre());
+                preparedStatement.setString(2, med.getFabricante());
+                preparedStatement.setString(3, med.getDescripcion());
+                preparedStatement.setDouble(4, med.getPrecio());
+                preparedStatement.setInt(5, med.getExistencias());
+                preparedStatement.setInt(6, med.getBajo_prescripcion());
+                int result = preparedStatement.executeUpdate();
+                preparedStatement.close();
+                return result;
+            } catch (SQLException ex) {
+                Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+                return -1;
+            }
+        }
+        return 0;
     }
     
     public Farmacia[] getFarmacia(String nombre){
@@ -77,7 +103,7 @@ public class Coneccion {
                     ,rs.getDouble(5),rs.getInt(6),rs.getInt(7));
                 listado.add(temporal);
             }
-            result = (Medicamento[]) listado.toArray();
+            result = listado.toArray(new Medicamento[listado.size()]);
         } catch (SQLException ex) {
             Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
         }
