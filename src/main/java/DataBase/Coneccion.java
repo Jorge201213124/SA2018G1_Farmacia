@@ -72,6 +72,25 @@ public class Coneccion {
         return 0;
     }
     
+    public Farmacia[] getFarmacia(int ide){
+        Farmacia[] result = null;
+        try{
+            ArrayList<Farmacia> listado = new ArrayList<Farmacia>();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery ("select * from FARMACIA where idFARMACIA = "+ide);
+            Farmacia temporal;
+            while (rs.next())
+            {
+                temporal = new Farmacia(rs.getInt(1),rs.getString(2),rs.getString(3));
+                listado.add(temporal);
+            }
+            result = listado.toArray(new Farmacia[listado.size()]);
+        } catch (SQLException ex) {
+            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
     public Farmacia[] getFarmacia(String nombre){
         Farmacia[] result = null;
         try{
@@ -85,6 +104,26 @@ public class Coneccion {
                 listado.add(temporal);
             }
             result = listado.toArray(new Farmacia[listado.size()]);
+        } catch (SQLException ex) {
+            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public Medicamento[] getMedicamento(int ide){
+        Medicamento[] result = null;
+        try {
+            ArrayList<Medicamento> listado = new ArrayList<Medicamento>();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery ("select * from MEDICAMENTO where idMEDICAMENTO = "+ide);
+            Medicamento temporal;
+            while (rs.next())
+            {
+                temporal = new Medicamento(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4)
+                    ,rs.getDouble(5),rs.getInt(6),rs.getInt(7));
+                listado.add(temporal);
+            }
+            result = listado.toArray(new Medicamento[listado.size()]);
         } catch (SQLException ex) {
             Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -105,6 +144,40 @@ public class Coneccion {
                 listado.add(temporal);
             }
             result = listado.toArray(new Medicamento[listado.size()]);
+        } catch (SQLException ex) {
+            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+    
+    public Traslado[] getTraslado(){
+        Traslado[] result = null;
+        try {
+            ArrayList<Traslado> listado = new ArrayList<Traslado>();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery ("select * from TRASLADO_MEDICAMENTO ");
+            Traslado temporal;
+            while (rs.next())
+            {
+                temporal = new Traslado();
+                temporal.setIdTRASLADO(rs.getInt("idTRASLADO_MEDICAMENTO"));
+                temporal.setFecha(rs.getString(2));
+                int medicamento = rs.getInt(3);
+                temporal.setMedicamento(getMedicamento(medicamento)[0]);
+                int origen = rs.getInt(4);
+                int destino = rs.getInt(5);
+                if(origen == 1){
+                    temporal.setTipo(1);
+                    temporal.setFarmacia(getFarmacia(destino)[0]);
+                }
+                else{
+                    temporal.setTipo(2);
+                    temporal.setFarmacia(getFarmacia(origen)[0]);
+                }
+                temporal.setCantidad(rs.getInt(6));
+                listado.add(temporal);
+            }
+            result = listado.toArray(new Traslado[listado.size()]);
         } catch (SQLException ex) {
             Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
         }

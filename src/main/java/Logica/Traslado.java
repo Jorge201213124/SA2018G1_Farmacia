@@ -76,6 +76,7 @@ public class Traslado {
         this.fecha = fecha;
     }
     
+    private int idTRASLADO;
     private Medicamento medicamento;
     private Farmacia farmacia;
     private int cantidad;
@@ -87,6 +88,10 @@ public class Traslado {
         this.farmacia = fam;
         this.cantidad = cant.intValue();
         this.tipo = type.intValue();
+    }
+    
+    public Traslado(){
+        
     }
     
     public void getFechaActual(){
@@ -104,6 +109,14 @@ public class Traslado {
 
     public String getFecha() {
         return fecha;
+    }
+
+    public int getIdTRASLADO() {
+        return idTRASLADO;
+    }
+
+    public void setIdTRASLADO(int idTRASLADO) {
+        this.idTRASLADO = idTRASLADO;
     }
     
 }

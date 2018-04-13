@@ -83,7 +83,7 @@ public class Servicios {
     
     @POST
     @Path("/traslado")
-    public String Traslado(String entrada){
+    public String insertTraslado(String entrada){
         String result = "{\"resultado\":0}";
         entrada = entrada.replace("\r\n","");
         entrada = entrada.replace("\t", "");
@@ -123,6 +123,36 @@ public class Servicios {
             Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
             result = "{\"error\":{\"id\":1,\"descripcion\":\"Entrada no esta en formato JSON.\"}}";
         }
+        return result;
+    }
+
+    @GET
+    @Path("/traslado")
+    public String getTraslado(){
+        String result = "{\r\n\t\"traslados\":[\r\n";
+        Coneccion con = new Coneccion();
+        con.Conectar();
+        Traslado[] trasTemp = con.getTraslado();
+        int tam = trasTemp.length;
+        for(int i = 0; i<tam;i++){
+            result += "\t\t{\r\n";
+            result += "\t\t\t\"id\":"+trasTemp[i].getIdTRASLADO()+",\r\n";
+            result += "\t\t\t\"medicamento\":\""+trasTemp[i].getMedicamento().getNombre()+"\",\r\n";
+            if(trasTemp[i].getTipo()==1){
+                result += "\t\t\t\"origen\":\"G1Farmacia\",\r\n";
+                result += "\t\t\t\"destino\":\""+trasTemp[i].getFarmacia().getNombre()+"\",\r\n";
+            }
+            else{
+                result += "\t\t\t\"origen\":\""+trasTemp[i].getFarmacia().getNombre()+"\",\r\n";
+                result += "\t\t\t\"destino\":\"G1Farmacia\",\r\n";
+            }
+            result += "\t\t\t\"fecha\":\""+trasTemp[i].getFecha()+"\",\r\n";
+            result += "\t\t\t\"cantidad\":"+trasTemp[i].getCantidad()+"\t\n";
+            result += "\t\t},\r\n";
+        }
+        result = result.substring(0, result.length()-3);
+        result += "\r\n\t]\r\n}";
+        con.Desconectar();
         return result;
     }
 }
