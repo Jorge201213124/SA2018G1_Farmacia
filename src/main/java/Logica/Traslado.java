@@ -83,11 +83,11 @@ public class Traslado {
     private int tipo;
     private String fecha;
     
-    public Traslado(Medicamento med, Farmacia fam, Long cant, Long type){
+    public Traslado(Medicamento med, Farmacia fam, Long cant, int type){
         this.medicamento = med;
         this.farmacia = fam;
         this.cantidad = cant.intValue();
-        this.tipo = type.intValue();
+        this.tipo = type;
     }
     
     public Traslado(){

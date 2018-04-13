@@ -31,6 +31,30 @@ import org.json.simple.parser.ParseException;
 public class Servicios {
     
     @POST
+    @Path("/traslado/validar")
+    public String validateTraslado(String traslado){
+        String result = "{\"resultado\":0}";
+        try{
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject)parser.parse(traslado);
+            Coneccion con = new Coneccion();
+            con.Conectar();
+            Medicamento[] tempMed = con.getMedicamento((String)obj.get("medicamento"));
+            if(tempMed.length>0){
+                int actual = tempMed[0].getExistencias();
+                Long solicitado = (Long)obj.get("cantidad");
+                if(actual>=solicitado.intValue())
+                    result = "{\"resultado\":1}";
+            }
+            con.Desconectar();
+        } catch (ParseException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+            result = "{\"error\":{\"id\":1,\"descripcion\":\"Entrada no esta en formato JSON.\"}}";
+        }
+        return result;
+    }
+    
+    @POST
     @Path("/medicamento")
     public String setMedicamento(@QueryParam("nuevos") String nuevos){
         String result = "";
@@ -108,8 +132,7 @@ public class Servicios {
                 farmTemp = con.getFarmacia((String)iterador.get("farmacia"));
                 //Registrar traslado
                 if(farmTemp.length>0 && medTemp.length>0){
-                    trasTemp = new Traslado(medTemp[0],farmTemp[0],(Long)iterador.get("cantidad"),
-                    (Long)iterador.get("tipo"));
+                    trasTemp = new Traslado(medTemp[0],farmTemp[0],(Long)iterador.get("cantidad"),1);
                     if(trasTemp.getMedicamento().getExistencias()>=trasTemp.getCantidad()){
                         trasTemp.getFechaActual();
                         trasTemp.CambiarExistencias();
