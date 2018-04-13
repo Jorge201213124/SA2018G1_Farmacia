@@ -10,6 +10,30 @@ package Logica;
  * @author Jorge-Proyectos
  */
 public class Farmacia {
+
+    public int getIdFarmacia() {
+        return idFarmacia;
+    }
+
+    public void setIdFarmacia(int idFarmacia) {
+        this.idFarmacia = idFarmacia;
+    }
+
+    public String getNombre() {
+        return Nombre;
+    }
+
+    public void setNombre(String Nombre) {
+        this.Nombre = Nombre;
+    }
+
+    public String getDireccion() {
+        return Direccion;
+    }
+
+    public void setDireccion(String Direccion) {
+        this.Direccion = Direccion;
+    }
     
     private int idFarmacia;
     private String Nombre;

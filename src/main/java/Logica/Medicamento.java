@@ -25,6 +25,7 @@ public class Medicamento {
         this.idMedicamento = aInt;
         this.Nombre = string;
         this.Fabricante = string0;
+        this.Descripcion = string1;
         this.Precio = aDouble;
         this.Existencias = aInt0;
         this.Bajo_prescripcion = aInt1;
