@@ -1,7 +1,10 @@
 
 import DataBase.Coneccion;
+import Logica.Despacho;
+import Logica.DetalleReceta;
 import Logica.Farmacia;
 import Logica.Medicamento;
+import Logica.Receta;
 import Logica.Traslado;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -111,7 +114,7 @@ public class Servicios {
         String result = "{\"resultado\":0}";
         entrada = entrada.replace("\r\n","");
         entrada = entrada.replace("\t", "");
-        entrada = entrada.replace(" ","t");
+        entrada = entrada.replace(" ","");
         try {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject)parser.parse(entrada);
@@ -176,6 +179,54 @@ public class Servicios {
         result = result.substring(0, result.length()-3);
         result += "\r\n\t]\r\n}";
         con.Desconectar();
+        return result;
+    }
+    
+    @GET
+    @Path("/receta")
+    public String getReceta(@QueryParam("entrada") String entrada){
+        String result = "{\"Result\":0}";
+        try{
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject)parser.parse(entrada);
+            Long valDPI = (Long)obj.get("Dpi");
+            Coneccion con = new Coneccion();
+            con.Conectar();
+            Despacho[] tempDesp = con.getDespacho(valDPI.toString());
+            if(tempDesp.length > 0){
+                result = "{\r\n\t\"Result\":1,\r\n\t\"Despacho\":[\r\n";
+                //Mostrar despachos
+                con.getRecetas(tempDesp[0]);
+                Receta tempRec;
+                DetalleReceta tempDet;
+                int tam = tempDesp[0].getList().size();
+                int tam2 = 0;
+                for(int i = 0; i<tam; i++){
+                    tempRec = tempDesp[0].getList().get(i);
+                    result += "\t\t{\r\n";
+                    result += "\t\t\t\"idReceta\":"+tempRec.getIdRECETA()+",\r\n";
+                    result += "\t\t\t\"Medicamentos\":[\r\n";
+                    con.getDetalle(tempRec);
+                    tam2 = tempRec.getList().size();
+                    for(int j = 0; j<tam2; j++){
+                        tempDet = tempRec.getList().get(j);
+                        result += "\t\t\t\t{\r\n";
+                        result += "\t\t\t\t\t\"NombreMedicamento\":\""+tempDet.getMed().getNombre()+"\",\r\n";
+                        result += "\t\t\t\t\t\"Fabricante\":\""+tempDet.getMed().getFabricante()+"\",\r\n";
+                        result += "\t\t\t\t\t\"Precio\":"+tempDet.getMed().getPrecio()+",\r\n";
+                        result += "\t\t\t\t\t\"Cantidad\":"+tempDet.getCantidad()+",\r\n";
+                        result += j == tam2-1 ? "\t\t\t\t}\r\n" : "\t\t\t\t},\r\n";
+                    } 
+                    result += "\t\t\t]\r\n";
+                    result += i == tam-1 ? "\t\t}\r\n":"\t\t}\r\n";
+                }
+                result += "\t]\r\n}";
+            }
+            con.Desconectar();
+        } catch (ParseException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+            result = "{\"error\":{\"id\":1,\"descripcion\":\"Entrada no esta en formato JSON.\"}}";
+        }
         return result;
     }
 }

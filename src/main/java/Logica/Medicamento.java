@@ -24,8 +24,8 @@ public class Medicamento {
     public Medicamento(int aInt, String string, String string0, String string1, double aDouble, int aInt0, int aInt1) {
         this.idMedicamento = aInt;
         this.Nombre = string;
-        this.Fabricante = string0;
-        this.Descripcion = string1;
+        this.Descripcion = string0;
+        this.Fabricante = string1;
         this.Precio = aDouble;
         this.Existencias = aInt0;
         this.Bajo_prescripcion = aInt1;

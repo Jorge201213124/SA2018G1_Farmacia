@@ -5,8 +5,11 @@
  */
 package DataBase;
 
+import Logica.Despacho;
+import Logica.DetalleReceta;
 import Logica.Farmacia;
 import Logica.Medicamento;
+import Logica.Receta;
 import Logica.Traslado;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,7 +30,7 @@ public class Coneccion {
     private String nameDB = "sa_farmacia";
     private String user = "sagrupo1";
     private String password = "sagrupo1";
-    private String cadenaConexion = "jdbc:mysql://localhost:3306/"; 
+    private String cadenaConexion = "jdbc:mysql://localhost:3306/";
     private Connection con;
     
     public void Conectar(){
@@ -239,6 +242,65 @@ public class Coneccion {
             }
         }
         return 0;
+    }
+    
+    public void getDetalle(Receta rec){
+        if(rec!=null){
+            try {
+                ArrayList<DetalleReceta> listado = new ArrayList<DetalleReceta>();
+                Statement s = con.createStatement();
+                ResultSet rs = s.executeQuery ("select * from DETALLE_RECETA where RECETA = "+rec.getIdRECETA()+"");
+                DetalleReceta temporal;
+                int ideMed;
+                while (rs.next())
+                {
+                    ideMed = rs.getInt(2);
+                    temporal = new DetalleReceta(rs.getInt(1),getMedicamento(ideMed)[0]);
+                    listado.add(temporal);
+                }
+                rec.setList(listado);
+            } catch (SQLException ex) {
+                Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public void getRecetas(Despacho desp){
+        if(desp!=null){
+            try {
+            ArrayList<Receta> listado = new ArrayList<Receta>();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery ("select * from RECETA where DESPACHO = "+desp.getIdDESPACHO()+"");
+            Receta temporal;
+            while (rs.next())
+            {
+                temporal = new Receta(rs.getInt(1),rs.getString(2),rs.getInt(3));
+                listado.add(temporal);
+            }
+            desp.setList(listado);
+            } catch (SQLException ex) {
+                Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public Despacho[] getDespacho(String dpi){
+        Despacho[] result = null;
+        try {
+            ArrayList<Despacho> listado = new ArrayList<Despacho>();
+            Statement s = con.createStatement();
+            ResultSet rs = s.executeQuery ("select * from DESPACHO where DPI = '"+dpi+"'");
+            Despacho temporal;
+            while (rs.next())
+            {
+                temporal = new Despacho(rs.getInt(1),rs.getString(2),rs.getString(3));
+                listado.add(temporal);
+            }
+            result = listado.toArray(new Despacho[listado.size()]);
+        } catch (SQLException ex) {
+            Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
     }
     
     public int Prueba(){
