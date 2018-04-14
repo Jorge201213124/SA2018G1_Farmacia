@@ -6,6 +6,7 @@
 package Logica;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  *
@@ -23,6 +24,16 @@ public class Receta {
         this.idRECETA = id;
         this.fecha = date;
         this.DESPACHO = desp;
+    }
+    
+    public Receta(int id, int desp){
+        this.idRECETA = id;
+        this.DESPACHO = desp;
+    }
+    
+    public void getFechaActual(){
+        Calendar c1 = Calendar.getInstance();
+        this.fecha = c1.get(Calendar.YEAR)+"/"+c1.get(Calendar.MONTH)+"/"+c1.get(Calendar.DATE);
     }
 
     public int getIdRECETA() {

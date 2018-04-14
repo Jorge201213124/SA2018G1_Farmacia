@@ -182,6 +182,59 @@ public class Servicios {
         return result;
     }
     
+    @POST
+    @Path("/receta")
+    public String setReceta(String entrada){
+        String result = "{\"result\":0}";
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject obj = (JSONObject)parser.parse(entrada);
+            String dpi = (String)obj.get("dpi");
+            Despacho[] despTemp;
+            Coneccion con = new Coneccion();
+            con.Conectar();
+            despTemp = con.getDespacho(dpi);
+            if(despTemp.length == 0){
+                String name = (String)obj.get("nombre");
+                Despacho nuevo = new Despacho(name,dpi);
+                con.insertDespacho(nuevo);
+                despTemp = con.getDespacho(dpi);
+            }
+            Long temp = (Long)obj.get("id_receta");
+                Receta rec = new Receta(temp.intValue(),despTemp[0].getIdDESPACHO());
+                rec.getFechaActual();
+                int cant = con.insertReceta(rec);
+                if(cant!=0){
+                    String productos = (String)obj.get("productos");
+                    productos = productos.substring(1);
+                    productos = productos.substring(0, productos.length()-1);
+                    String cantidades = (String)obj.get("cantidades");
+                    cantidades = cantidades.substring(1);
+                    cantidades = cantidades.substring(0, cantidades.length()-1);
+                    String[] arrPro = productos.split(",");
+                    String[] arrCant = cantidades.split(",");
+                    int tam = arrPro.length;
+                    Medicamento medTemp[];
+                    DetalleReceta temDet;
+                    int contador = 0;
+                    for(int i = 0; i<tam; i++){
+                        medTemp = con.getMedicamento(arrPro[i]);
+                        if(medTemp.length>0){
+                            temDet = new DetalleReceta(Integer.parseInt(arrCant[i]),medTemp[0]);
+                            temDet.setRec(rec);
+                            contador += con.insertDetalle(temDet);
+                        }
+                    }
+                    result = "{\"result\":"+contador+"}";
+                }
+            con.Desconectar();
+        } catch (ParseException ex) {
+            Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
+            result = "{\"error\":{\"id\":1,\"descripcion\":\"Entrada no esta en formato JSON.\"}}";
+        }
+        return result;
+    }
+    
     @GET
     @Path("/receta")
     public String getReceta(@QueryParam("entrada") String entrada){

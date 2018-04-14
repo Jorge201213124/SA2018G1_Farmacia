@@ -13,6 +13,7 @@ public class DetalleReceta {
     
     private int Cantidad;
     private Medicamento med;
+    private Receta rec;
     
     public DetalleReceta(int cant, Medicamento m){
         this.Cantidad = cant;
@@ -33,6 +34,14 @@ public class DetalleReceta {
 
     public void setMed(Medicamento med) {
         this.med = med;
+    }
+
+    public Receta getRec() {
+        return rec;
+    }
+
+    public void setRec(Receta rec) {
+        this.rec = rec;
     }
     
 }

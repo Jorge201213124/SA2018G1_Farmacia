@@ -24,6 +24,11 @@ public class Despacho {
         this.dpi = cui;
     }
     
+    public Despacho(String name, String cui){
+        this.nombre = name;
+        this.dpi = cui;
+    }
+    
     public void getRecetas(){
         
     }

@@ -213,6 +213,65 @@ public class Coneccion {
         return 0;
     }
     
+    public int insertDetalle(DetalleReceta det){
+        if(det != null){
+            try {
+                String cmd = "INSERT INTO DETALLE_RECETA"
+                + "(Cantidad,MEDICAMENTO,RECETA) VALUES"
+                + "(?,?,?)";
+                PreparedStatement preparedStatement = con.prepareStatement(cmd);
+                preparedStatement.setInt(1, det.getCantidad());
+                preparedStatement.setInt(2, det.getMed().getIdMedicamento());
+                preparedStatement.setInt(3,det.getRec().getIdRECETA());
+                int result = preparedStatement.executeUpdate();
+                preparedStatement.close();
+                return result;
+            } catch (SQLException ex) {
+                Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return 0;
+    }
+    
+    public int insertDespacho(Despacho det){
+        if(det != null){
+            try {
+                String cmd = "INSERT INTO DESPACHO"
+                + "(Nombre,DPI) VALUES"
+                + "(?,?)";
+                PreparedStatement preparedStatement = con.prepareStatement(cmd);
+                preparedStatement.setString(1, det.getNombre());
+                preparedStatement.setString(2, det.getDpi());
+                int result = preparedStatement.executeUpdate();
+                preparedStatement.close();
+                return result;
+            } catch (SQLException ex) {
+                Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return 0;
+    }
+    
+    public int insertReceta(Receta rec){
+        if(rec != null){
+            try {
+                String cmd = "INSERT INTO RECETA"
+                + "(idRECETA,Fecha,DESPACHO) VALUES"
+                + "(?,?,?)";
+                PreparedStatement preparedStatement = con.prepareStatement(cmd);
+                preparedStatement.setInt(1, rec.getIdRECETA());
+                preparedStatement.setString(2, rec.getFecha());
+                preparedStatement.setInt(3, rec.getDESPACHO());
+                int result = preparedStatement.executeUpdate();
+                preparedStatement.close();
+                return result;
+            } catch (SQLException ex) {
+                Logger.getLogger(Coneccion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return 0;
+    }
+    
     public int insertTraslado(Traslado tras){
         if(tras != null){
             try {
