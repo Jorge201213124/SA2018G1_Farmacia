@@ -99,7 +99,7 @@ public class Servicios {
             con.Conectar();
             Medicamento[] arreglo= con.getMedicamento(cadena);
             if(arreglo.length>0)
-                result = "{\"resultado\":\""+arreglo[0].getIdMedicamento()+"\"}";
+                result = "{\"resultado\":\""+arreglo[0].getIdMedicamento()+"\"a}";
             con.Desconectar();
         } catch (ParseException ex) {
             Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,6 +186,7 @@ public class Servicios {
     @Path("/receta")
     public String setReceta(String entrada){
         String result = "{\"result\":0}";
+        entrada = entrada.replace("'","");
         try {
             JSONParser parser = new JSONParser();
             JSONObject obj = (JSONObject)parser.parse(entrada);
