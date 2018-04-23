@@ -30,7 +30,7 @@ public class Coneccion {
     private String nameDB = "sa_farmacia";
     private String user = "sagrupo1";
     private String password = "sagrupo1";
-    private String cadenaConexion = "jdbc:mysql://localhost:3306/";
+    private String cadenaConexion = "jdbc:mysql://54.186.54.147:3306/";
     private Connection con;
     
     public void Conectar(){

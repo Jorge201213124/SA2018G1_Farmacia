@@ -99,7 +99,7 @@ public class Servicios {
             con.Conectar();
             Medicamento[] arreglo= con.getMedicamento(cadena);
             if(arreglo.length>0)
-                result = "{\"resultado\":\""+arreglo[0].getIdMedicamento()+"\"a}";
+                result = "{\"resultado\":\""+arreglo[0].getIdMedicamento()+"\"}";
             con.Desconectar();
         } catch (ParseException ex) {
             Logger.getLogger(Servicios.class.getName()).log(Level.SEVERE, null, ex);
